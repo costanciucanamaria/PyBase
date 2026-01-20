@@ -41,6 +41,12 @@ print("--------------Starting Identification------------------")
 
 log_type_counts = []
 
+#inainte de for initializam listele (pt punctul 5)
+
+error_codes_list = []
+warning_codes_list = []
+
+
 #print(log_type_counts)
 
 for i in range(len(raw_logs)):
@@ -55,6 +61,17 @@ for i in range(len(raw_logs)):
         print("Ce eroare avem?")
         print(raw_logs[i][2])
 
+
+        # 5. Extract error / warning codes
+        # From lines that contain "code=", extract the code value.
+        # Example: "code=e12" → "E12"
+        # Must use: split("="), upper()
+        # procesam eroarea din logul cu erori:
+        # raw_logs[i][2].split("=") -> ne va returna o lista cu 2 elemente ['code', 'E12']
+        # raw_logs[i][2].split("=")[1]
+        extracted_error_code = raw_logs[i][2].split("=")[1]
+        error_codes_list.append(extracted_error_code)
+
     if raw_logs[i][0].startswith("info"):
         # log_type_counts.append("info")
         log_type_counts.append(raw_logs[i][0].strip())
@@ -65,6 +82,8 @@ for i in range(len(raw_logs)):
         print("Ce warning avem?")
         print(raw_logs[i][2])
 
+        extracted_error_code = raw_logs[i][2].split("=")[1]
+        warning_codes_list.append(extracted_error_code)
 
 
 # 4. count log types
@@ -78,6 +97,8 @@ for i in range(len(raw_logs)):
 error_count = log_type_counts.count("error")
 warning_count = log_type_counts.count("warning")
 info_count = log_type_counts.count("info")
+
+
 
 # Aceasta este solutia preliminara:
 
@@ -102,12 +123,13 @@ Errors  : {error_count}
 Warnings: {warning_count}
 Info    : {info_count}
 
-Error Codes: E12, E99
-Warning Codes: W07
+Error Codes: {error_codes_list}
+Warning Codes: {warning_codes_list}
 """
 
 print(output_string)
-
+print(error_codes_list)
+print(warning_codes_list)
 
 
 
